@@ -83,3 +83,81 @@ const posts = [
   }
 ];
 
+// Select from the DOM the element that will contain all the posts
+const postsListElement = document.querySelector(".posts-list");
+
+posts.forEach(post => {
+  const singlePostMarkup = generateSinglePostMarkup(post);
+  postsListElement.insertAdjacentElement("beforeend", singlePostMarkup);
+});
+
+function generateSinglePostMarkup(postObject) {
+  const singlePostElement = document.createElement("div");
+  singlePostElement.classList.add("post");
+  singlePostElement.innerHTML += generatePostHeader(postObject)
+  // singlePostElement.innerHTML += generatePostHeader(postObject) + generatePostText(postObject) + generatePostImage(postObject) + generatePostFooter(postObject);
+  console.log(singlePostElement);
+  return singlePostElement;
+}
+
+function generatePostHeader(postObject) {
+  let headerMarkup = `
+  <div class="post__header">
+    <div class="post-meta">                    
+      <div class="post-meta__icon">`;
+  if (postObject.author.image != null) {
+    headerMarkup += `
+    <img class="profile-pic" src="${postObject.author.image}" alt="${postObject.author.name}">
+      </div>
+      <div class="post-meta__data">
+        <div class="post-meta__author">${postObject.author.name}</div>
+        <div class="post-meta__time">${postObject.created}</div>
+      </div>                    
+    </div>
+  </div>`
+  }
+  else {
+    headerMarkup += `
+    <div class="profile-pic-default">
+      <span>${recoverAuthorInitials(postObject.author.name)}</span>
+    </div>
+      </div>
+      <div class="post-meta__data">
+        <div class="post-meta__author">${postObject.author.name}</div>
+        <div class="post-meta__time">${postObject.created}</div>
+      </div>                    
+    </div>
+  </div>`
+  }
+  return headerMarkup;
+}
+
+function recoverAuthorInitials(authorName) {
+  const authorNameArray = authorName.split(" ");
+  const authorInitialsArray = authorNameArray.map(elements => {
+    return elements.charAt(0).toUpperCase();
+  });
+  const authorInitialsString = authorInitialsArray.join("");
+  return authorInitialsString;
+}
+
+// `<div class="post">
+//   
+//    <div class="post__text">Placeat libero ipsa nobis ipsum quibusdam quas harum ut. Distinctio minima iusto. Ad ad maiores et sint voluptate recusandae architecto. Et nihil ullam aut alias.</div>
+//    <div class="post__image">
+//      <img src="https://unsplash.it/600/300?image=171" alt="">
+//    </div>
+//    <div class="post__footer">
+//      <div class="likes js-likes">
+//        <div class="likes__cta">
+//          <a class="like-button  js-like-button" href="#" data-postid="1">
+//            <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
+//            <span class="like-button__label">Mi Piace</span>
+//          </a>
+//        </div>
+//        <div class="likes__counter">
+//          Piace a <b id="like-counter-1" class="js-likes-counter">80</b> persone
+//        </div>
+//      </div> 
+//    </div>            
+//</div>`
