@@ -1,3 +1,5 @@
+"use strict";
+
 /*
 Descrizione
 Ricreiamo un feed social aggiungendo al layout di base fornito, il nostro script JS in cui:
@@ -105,28 +107,22 @@ function generatePostHeader(postObject) {
       <div class="post-meta__icon">`;
   if (postObject.author.image != null) {
     headerMarkup += `
-    <img class="profile-pic" src="${postObject.author.image}" alt="${postObject.author.name}">
-      </div>
-      <div class="post-meta__data">
-        <div class="post-meta__author">${postObject.author.name}</div>
-        <div class="post-meta__time">${postObject.created}</div>
-      </div>                    
-    </div>
-  </div>`
+        <img class="profile-pic" src="${postObject.author.image}" alt="${postObject.author.name}">`
   }
   else {
     headerMarkup += `
-    <div class="profile-pic-default">
-      <span>${recoverAuthorInitials(postObject.author.name)}</span>
-    </div>
+        <div class="profile-pic-default">
+          <span>${recoverAuthorInitials(postObject.author.name)}</span>
+        </div>`
+  }
+  headerMarkup += `
       </div>
       <div class="post-meta__data">
         <div class="post-meta__author">${postObject.author.name}</div>
-        <div class="post-meta__time">${postObject.created}</div>
+        <div class="post-meta__time">${new Date(postObject.created).toLocaleDateString("it-IT", {day: "2-digit", month: "2-digit", year: "numeric"})}</div>
       </div>                    
     </div>
-  </div>`
-  }
+  </div>`;
   return headerMarkup;
 }
 
