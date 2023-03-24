@@ -235,14 +235,18 @@ function generatePostFooter(postObject) {
 function manageLikeBehavior(likeButton, currentPostLikesNumberElement, likedPostsList, currentPostId) {
   // Checks if the post is already liked or not
   if (!likeButton.classList.contains("like-button--liked")) {
-    // If not, increases the likes counter and save the post ID to the array of liked posts IDs
+    // If not, increases the likes counter, sets it color and save the post ID to the array of liked posts IDs
     currentPostLikesNumberElement.innerHTML = Number(currentPostLikesNumberElement.innerHTML) + 1;
+    currentPostLikesNumberElement.style.color = "#055c87";
     likedPostsList.push(currentPostId);
   } else {
-    // Otherwise decreases the likes counter and removes the post ID from the array of liked posts IDs
+    // Otherwise decreases the likes counter, resets its color and removes the post ID from the array of liked posts IDs
     currentPostLikesNumberElement.innerHTML = Number(currentPostLikesNumberElement.innerHTML) - 1;
+    currentPostLikesNumberElement.style.color = "unset";
     likedPostsList.splice(likedPostsList.indexOf(currentPostId), 1);
   }
+  // Toggles the class for the number of likes to apply an animation in case of a new like
+  currentPostLikesNumberElement.classList.toggle("likedcounter");
   // Toggles the class for the liked post
   likeButton.classList.toggle("like-button--liked");
   // Shows the list of liked posts IDs
