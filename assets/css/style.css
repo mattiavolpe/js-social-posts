@@ -105,6 +105,10 @@ h1 {
   align-items: center;
 }
 
+.likes > * {
+  text-align: center;
+}
+
 .like-button {
   display: inline-block;
   padding: 16px;
