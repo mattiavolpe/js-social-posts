@@ -233,13 +233,18 @@ function generatePostFooter(postObject) {
  * @param {number} currentPostId The id of the post the user has clicked
  */
 function manageLikeBehavior(likeButton, currentPostLikesNumberElement, likedPostsList, currentPostId) {
+  // Checks if the post is already liked or not
   if (!likeButton.classList.contains("like-button--liked")) {
+    // If not, increases the likes counter and save the post ID to the array of liked posts IDs
     currentPostLikesNumberElement.innerHTML = Number(currentPostLikesNumberElement.innerHTML) + 1;
     likedPostsList.push(currentPostId);
   } else {
+    // Otherwise decreases the likes counter and removes the post ID from the array of liked posts IDs
     currentPostLikesNumberElement.innerHTML = Number(currentPostLikesNumberElement.innerHTML) - 1;
     likedPostsList.splice(likedPostsList.indexOf(currentPostId), 1);
   }
+  // Toggles the class for the liked post
   likeButton.classList.toggle("like-button--liked");
+  // Shows the list of liked posts IDs
   console.log(likedPostsList);
 }
