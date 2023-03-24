@@ -140,16 +140,22 @@ function recoverAuthorInitials(authorName) {
 }
 
 function generatePostText(postTextualContent) {
-  let textMarkup = `<div class="post__text">${postTextualContent}</div>`;
+  if (postTextualContent != undefined && postTextualContent != "") {
+    let textMarkup = `<div class="post__text">${postTextualContent}</div>`;
   return textMarkup;
+  }
+  return "";
 }
 
 function generatePostImage(postImage) {
-  let imageMarkup = `
-  <div class="post__image">
-    <img src="${postImage}" alt="Post image">
-  </div>`;
-  return imageMarkup;
+  if (postImage != undefined && postImage != "") {
+    let imageMarkup = `
+    <div class="post__image">
+      <img src="${postImage}" alt="Post image">
+    </div>`;
+    return imageMarkup;
+  }
+  return "";
 }
 
 function generatePostFooter(postObject) {
@@ -163,25 +169,9 @@ function generatePostFooter(postObject) {
         </a>
       </div>
       <div class="likes__counter">
-        Piace a <b id="like-counter-${postObject.id}" class="js-likes-counter">${postObject.likes}</b> persone
+        Piace a <b id="like-counter-${postObject.id}" class="js-likes-counter">${postObject.likes != undefined && postObject.likes != "" ? postObject.likes : 0}</b> persone
       </div>
     </div> 
   </div>`;
   return footerMarkup;
 }
-
-// `<div class="post">
-//    <div class="post__footer">
-//      <div class="likes js-likes">
-//        <div class="likes__cta">
-//          <a class="like-button  js-like-button" href="#" data-postid="1">
-//            <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
-//            <span class="like-button__label">Mi Piace</span>
-//          </a>
-//        </div>
-//        <div class="likes__counter">
-//          Piace a <b id="like-counter-1" class="js-likes-counter">80</b> persone
-//        </div>
-//      </div> 
-//    </div>            
-//</div>`
