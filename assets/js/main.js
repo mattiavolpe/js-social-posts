@@ -94,8 +94,8 @@ posts.forEach(post => {
 function generateSinglePostMarkup(postObject) {
   const singlePostElement = document.createElement("div");
   singlePostElement.classList.add("post");
-  singlePostElement.innerHTML += generatePostHeader(postObject)
-  // singlePostElement.innerHTML += generatePostHeader(postObject) + generatePostText(postObject) + generatePostImage(postObject) + generatePostFooter(postObject);
+  singlePostElement.innerHTML += generatePostHeader(postObject) + generatePostText(postObject.content);
+  // singlePostElement.innerHTML += generatePostHeader(postObject) + generatePostText(postObject.content) + generatePostImage(postObject) + generatePostFooter(postObject);
   console.log(singlePostElement);
   return singlePostElement;
 }
@@ -141,9 +141,13 @@ function recoverAuthorInitials(authorName) {
   return authorInitialsString;
 }
 
+function generatePostText(postTextualContent) {
+  let textMarkup = `<div class="post__text">${postTextualContent}</div>`;
+  return textMarkup;
+}
+
 // `<div class="post">
 //   
-//    <div class="post__text">Placeat libero ipsa nobis ipsum quibusdam quas harum ut. Distinctio minima iusto. Ad ad maiores et sint voluptate recusandae architecto. Et nihil ullam aut alias.</div>
 //    <div class="post__image">
 //      <img src="https://unsplash.it/600/300?image=171" alt="">
 //    </div>
