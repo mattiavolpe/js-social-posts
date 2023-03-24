@@ -1,5 +1,3 @@
-"use strict";
-
 /*
 Descrizione
 Ricreiamo un feed social aggiungendo al layout di base fornito, il nostro script JS in cui:
@@ -92,6 +90,22 @@ posts.forEach(post => {
   const singlePostMarkup = generateSinglePostMarkup(post);
   postsListElement.insertAdjacentElement("beforeend", singlePostMarkup);
 });
+
+const likeButtons = document.querySelectorAll(".like-button");
+
+likeButtons.forEach((likeButton, index) => {
+  likeButton.addEventListener("click", function(e) {
+    e.preventDefault();
+    const currentPostId = likeButton.getAttribute("data-postid");
+    const currentPostLikesNumberElement = document.getElementById(`like-counter-${currentPostId}`);
+    if (!likeButton.classList.contains("like-button--liked")) {
+      currentPostLikesNumberElement.innerHTML = Number(currentPostLikesNumberElement.innerHTML) + 1;
+    } else {
+      currentPostLikesNumberElement.innerHTML = Number(currentPostLikesNumberElement.innerHTML) - 1;
+    }
+    likeButton.classList.toggle("like-button--liked");
+  })
+})
 
 function generateSinglePostMarkup(postObject) {
   const singlePostElement = document.createElement("div");
