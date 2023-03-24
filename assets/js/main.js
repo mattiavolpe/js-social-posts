@@ -94,9 +94,7 @@ posts.forEach(post => {
 function generateSinglePostMarkup(postObject) {
   const singlePostElement = document.createElement("div");
   singlePostElement.classList.add("post");
-  singlePostElement.innerHTML += generatePostHeader(postObject) + generatePostText(postObject.content) + generatePostImage(postObject.media);
-  // singlePostElement.innerHTML += generatePostHeader(postObject) + generatePostText(postObject.content) + generatePostImage(postObject.media) + generatePostFooter(postObject);
-  console.log(singlePostElement);
+  singlePostElement.innerHTML += generatePostHeader(postObject) + generatePostText(postObject.content) + generatePostImage(postObject.media) + generatePostFooter(postObject);
   return singlePostElement;
 }
 
@@ -154,11 +152,25 @@ function generatePostImage(postImage) {
   return imageMarkup;
 }
 
+function generatePostFooter(postObject) {
+  let footerMarkup = `
+  <div class="post__footer">
+    <div class="likes js-likes">
+      <div class="likes__cta">
+        <a class="like-button  js-like-button" href="#" data-postid="${postObject.id}">
+          <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
+          <span class="like-button__label">Mi Piace</span>
+        </a>
+      </div>
+      <div class="likes__counter">
+        Piace a <b id="like-counter-${postObject.id}" class="js-likes-counter">${postObject.likes}</b> persone
+      </div>
+    </div> 
+  </div>`;
+  return footerMarkup;
+}
+
 // `<div class="post">
-//   
-//    <div class="post__image">
-//      <img src="https://unsplash.it/600/300?image=171" alt="">
-//    </div>
 //    <div class="post__footer">
 //      <div class="likes js-likes">
 //        <div class="likes__cta">
