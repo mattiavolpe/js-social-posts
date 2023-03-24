@@ -25,6 +25,7 @@ Gestire l'assenza dell'immagine profilo con un elemento di fallback che contiene
 Al click su un pulsante "Mi Piace" di un post, se abbiamo già cliccato dobbiamo decrementare il contatore e cambiare il colore del bottone.
 */
 
+// List of posts objects
 const posts = [
   {
     "id": 1,
@@ -86,45 +87,58 @@ const posts = [
 // Select from the DOM the element that will contain all the posts
 const postsListElement = document.querySelector(".posts-list");
 
+// Generate posts and append them into the DOM
 posts.forEach(post => {
   const singlePostMarkup = generateSinglePostMarkup(post);
   postsListElement.insertAdjacentElement("beforeend", singlePostMarkup);
 });
 
+// Select from the DOM the list of like buttons
 const likeButtons = document.querySelectorAll(".like-button");
 
+// Create an array that will contain the list of liked posts ID
 const likedPostsList = [];
 
-likeButtons.forEach((likeButton, index) => {
+// Cycle through the array of like button to create a click event listener for each one of them
+likeButtons.forEach(likeButton => {
   likeButton.addEventListener("click", function(e) {
     e.preventDefault();
+    // Gets the liked post ID
     const currentPostId = likeButton.getAttribute("data-postid");
+
+    // Select from the DOM the element containing the number of likes for the liked post
     const currentPostLikesNumberElement = document.getElementById(`like-counter-${currentPostId}`);
-    if (!likeButton.classList.contains("like-button--liked")) {
-      currentPostLikesNumberElement.innerHTML = Number(currentPostLikesNumberElement.innerHTML) + 1;
-      likedPostsList.push(currentPostId);
-    } else {
-      currentPostLikesNumberElement.innerHTML = Number(currentPostLikesNumberElement.innerHTML) - 1;
-      likedPostsList.splice(likedPostsList.indexOf(currentPostId), 1);
-    }
-    likeButton.classList.toggle("like-button--liked");
-    console.log(likedPostsList);
+
+    // Increase / decrease the likes counter and save / remove the post ID to the array of liked posts
+    manageLikeBehavior(likeButton, currentPostLikesNumberElement, likedPostsList, currentPostId);
   });
 })
 
+/**
+ * Provides the HTML markup for a single post, taking data from the single post object
+ * @param {object} postObject The object containing the properties of a single post
+ * @returns {HTMLElement} The element containing the HTML markup of the post
+ */
 function generateSinglePostMarkup(postObject) {
   const singlePostElement = document.createElement("div");
   singlePostElement.classList.add("post");
+
+  // Generate the markup for every single section of the post
   singlePostElement.innerHTML += generatePostHeader(postObject) + generatePostText(postObject.content) + generatePostImage(postObject.media) + generatePostFooter(postObject);
   return singlePostElement;
 }
 
+/**
+ * Provides the HTML markup for the header section of a single post, taking care of a missing profile image
+ * @param {object} postObject The object containing the properties of a single post
+ * @returns {string} The string containing the markup for the header section of the post
+ */
 function generatePostHeader(postObject) {
   let headerMarkup = `
   <div class="post__header">
     <div class="post-meta">                    
       <div class="post-meta__icon">`;
-  if (postObject.author.image != null) {
+  if (postObject.author.image != null && postObject.author.image != undefined && postObject.author.image != "") {
     headerMarkup += `
         <img class="profile-pic" src="${postObject.author.image}" alt="${postObject.author.name}">`
   }
@@ -145,6 +159,11 @@ function generatePostHeader(postObject) {
   return headerMarkup;
 }
 
+/**
+ * Provides the post's author initials in case it has not a profile image
+ * @param {string} authorName The string containing the name of the post's author
+ * @returns {string} The string containing the initials of the post's author
+ */
 function recoverAuthorInitials(authorName) {
   const authorNameArray = authorName.split(" ");
   const authorInitialsArray = authorNameArray.map(elements => {
@@ -154,6 +173,11 @@ function recoverAuthorInitials(authorName) {
   return authorInitialsString;
 }
 
+/**
+ * Provides the HTML markup for the textual content section of a single post, taking care of a missing textual content
+ * @param {string} postTextualContent The string containing the textual content of the post
+ * @returns {string} The string containing the markup for the textual section of the post
+ */
 function generatePostText(postTextualContent) {
   if (postTextualContent != undefined && postTextualContent != "") {
     let textMarkup = `<div class="post__text">${postTextualContent}</div>`;
@@ -162,6 +186,11 @@ function generatePostText(postTextualContent) {
   return "";
 }
 
+/**
+ * Provides the HTML markup for the image section of a single post, taking care of a missing image
+ * @param {string} postImage The string containing the path to the image of the post
+ * @returns {string} The string containing the markup for the image section of the post
+ */
 function generatePostImage(postImage) {
   if (postImage != undefined && postImage != "") {
     let imageMarkup = `
@@ -173,6 +202,11 @@ function generatePostImage(postImage) {
   return "";
 }
 
+/**
+ * Provides the HTML markup for the footer section of a single post, taking care of a missing likes record
+ * @param {object} postObject The object containing the properties of a single post
+ * @returns {string} The string containing the markup for the image section of the post
+ */
 function generatePostFooter(postObject) {
   let footerMarkup = `
   <div class="post__footer">
@@ -189,4 +223,23 @@ function generatePostFooter(postObject) {
     </div> 
   </div>`;
   return footerMarkup;
+}
+
+/**
+ * Increases / decreases the number of likes, changes the like button style and saves / removes the id of the liked post from the array of liked posts id
+ * @param {HTMLElement} likeButton The like button the user has clicked
+ * @param {HTMLElement} currentPostLikesNumberElement The element of the DOM containing the number of likes for the liked post
+ * @param {number[]} likedPostsList The array containing the list of liked posts ID
+ * @param {number} currentPostId The id of the post the user has clicked
+ */
+function manageLikeBehavior(likeButton, currentPostLikesNumberElement, likedPostsList, currentPostId) {
+  if (!likeButton.classList.contains("like-button--liked")) {
+    currentPostLikesNumberElement.innerHTML = Number(currentPostLikesNumberElement.innerHTML) + 1;
+    likedPostsList.push(currentPostId);
+  } else {
+    currentPostLikesNumberElement.innerHTML = Number(currentPostLikesNumberElement.innerHTML) - 1;
+    likedPostsList.splice(likedPostsList.indexOf(currentPostId), 1);
+  }
+  likeButton.classList.toggle("like-button--liked");
+  console.log(likedPostsList);
 }
