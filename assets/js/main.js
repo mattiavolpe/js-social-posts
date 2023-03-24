@@ -93,6 +93,8 @@ posts.forEach(post => {
 
 const likeButtons = document.querySelectorAll(".like-button");
 
+const likedPostsList = [];
+
 likeButtons.forEach((likeButton, index) => {
   likeButton.addEventListener("click", function(e) {
     e.preventDefault();
@@ -100,11 +102,14 @@ likeButtons.forEach((likeButton, index) => {
     const currentPostLikesNumberElement = document.getElementById(`like-counter-${currentPostId}`);
     if (!likeButton.classList.contains("like-button--liked")) {
       currentPostLikesNumberElement.innerHTML = Number(currentPostLikesNumberElement.innerHTML) + 1;
+      likedPostsList.push(currentPostId);
     } else {
       currentPostLikesNumberElement.innerHTML = Number(currentPostLikesNumberElement.innerHTML) - 1;
+      likedPostsList.splice(likedPostsList.indexOf(currentPostId), 1);
     }
     likeButton.classList.toggle("like-button--liked");
-  })
+    console.log(likedPostsList);
+  });
 })
 
 function generateSinglePostMarkup(postObject) {
